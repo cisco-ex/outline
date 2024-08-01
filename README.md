@@ -14,6 +14,8 @@
   <a href="https://translate.getoutline.com/project/outline" alt="Localized"><img src="https://badges.crowdin.net/outline/localized.svg"></a>
 </p>
 
+<p style="font-size:1.5em; color:#991f19; background-color:#ffdad8; padding:12px; border-radius:4px">⚠️ This version of outline is modified to use rudder tokens. It <b>must not</b> be deployed anywhere where the request x-subject header cannot be trusted.</p>
+
 This is the source code that runs [**Outline**](https://www.getoutline.com) and all the associated services. If you want to use Outline then you don't need to run this code, we offer a hosted version of the app at [getoutline.com](https://www.getoutline.com). You can also find documentation on using Outline in [our guide](https://docs.getoutline.com/s/guide).
 
 If you'd like to run your own copy of Outline or contribute to development then this is the place for you.
