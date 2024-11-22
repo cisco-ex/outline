@@ -1,5 +1,5 @@
 ARG APP_PATH=/opt/outline
-FROM ghcr.io/cisco-ex/outline-base:0.78.0-rc.0 AS base
+FROM ghcr.io/cisco-ex/outline-base:0.78.0 AS base
 
 ARG APP_PATH
 WORKDIR $APP_PATH
