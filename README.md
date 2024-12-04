@@ -15,8 +15,8 @@
 </p>
 
 > [!CAUTION]
-> ⚠️ This version of outline is modified to use rudder tokens.
-> It **must not** be deployed anywhere where the request x-subject header cannot be trusted.</p>
+> This version of outline is modified to use rudder tokens.  
+> It **must not** be deployed anywhere where the `x-subject` header cannot be trusted.
 
 This is the source code that runs [**Outline**](https://www.getoutline.com) and all the associated services. If you want to use Outline then you don't need to run this code, we offer a hosted version of the app at [getoutline.com](https://www.getoutline.com). You can also find documentation on using Outline in [our guide](https://docs.getoutline.com/s/guide).
 
