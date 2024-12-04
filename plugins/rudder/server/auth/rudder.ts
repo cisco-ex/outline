@@ -29,7 +29,7 @@ passport.use(
   ) {
     try {
       const sub = ctx.headers["x-subject"] as string;
-      const cec = sub.split("@")[0];
+      const email = `${sub}@cisco.com`;
 
       if (!sub) {
         throw AuthenticationError("x-subject header is required");
@@ -37,7 +37,7 @@ passport.use(
 
       const team = await getTeamFromContext(ctx);
       const client = getClientFromContext(ctx);
-      const { domain } = parseEmail(sub);
+      const { domain } = parseEmail(email);
 
       const result = await accountProvisioner({
         ip: ctx.ip,
@@ -51,8 +51,8 @@ passport.use(
         user: {
           // todo: use the user api service when it's deployed to look this up
           name: sub,
-          email: sub,
-          avatarUrl: `https://wwwin.cisco.com/dir/photo/zoom/${cec}.jpg`,
+          email,
+          avatarUrl: `https://wwwin.cisco.com/dir/photo/zoom/${sub}.jpg`,
         },
         authenticationProvider: {
           name: config.id,
