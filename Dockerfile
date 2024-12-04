@@ -1,7 +1,26 @@
 ARG APP_PATH=/opt/outline
-FROM ghcr.io/cisco-ex/outline-base:0.78.0 AS base
+FROM node:20-slim AS base
 
 ARG APP_PATH
+WORKDIR $APP_PATH
+COPY ./package.json ./yarn.lock ./
+COPY ./patches ./patches
+
+RUN yarn install --no-optional --frozen-lockfile --network-timeout 1000000 && \
+  yarn cache clean
+
+COPY . .
+ARG CDN_URL
+RUN yarn build
+
+RUN rm -rf node_modules
+
+RUN yarn install --production=true --frozen-lockfile --network-timeout 1000000 && \
+  yarn cache clean
+
+ENV PORT=3000
+
+ARG APP_PATH=/opt/outline
 WORKDIR $APP_PATH
 
 # ---
