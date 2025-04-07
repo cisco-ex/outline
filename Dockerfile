@@ -1,8 +1,26 @@
 ARG APP_PATH=/opt/outline
-ARG BASE_IMAGE=outlinewiki/outline-base
-FROM ${BASE_IMAGE} AS base
+FROM node:20-slim AS base
 
 ARG APP_PATH
+WORKDIR $APP_PATH
+COPY ./package.json ./yarn.lock ./
+COPY ./patches ./patches
+
+RUN yarn install --no-optional --frozen-lockfile --network-timeout 1000000 && \
+  yarn cache clean
+
+COPY . .
+ARG CDN_URL
+RUN yarn build
+
+RUN rm -rf node_modules
+
+RUN yarn install --production=true --frozen-lockfile --network-timeout 1000000 && \
+  yarn cache clean
+
+ENV PORT=3000
+
+ARG APP_PATH=/opt/outline
 WORKDIR $APP_PATH
 
 # ---
@@ -16,10 +34,10 @@ ENV NODE_ENV=production
 
 # Create a non-root user compatible with Debian and BusyBox based images
 RUN addgroup --gid 1001 nodejs && \
-    adduser --uid 1001 --ingroup nodejs nodejs && \
-    mkdir -p /var/lib/outline && \
-    chown -R nodejs:nodejs /var/lib/outline && \
-    chown -R nodejs:nodejs $APP_PATH
+  adduser --uid 1001 --ingroup nodejs nodejs && \
+  mkdir -p /var/lib/outline && \
+  chown -R nodejs:nodejs /var/lib/outline && \
+  chown -R nodejs:nodejs $APP_PATH
 
 COPY --from=base --chown=nodejs:nodejs $APP_PATH/build ./build
 COPY --from=base --chown=nodejs:nodejs $APP_PATH/server ./server
@@ -29,13 +47,14 @@ COPY --from=base --chown=nodejs:nodejs $APP_PATH/node_modules ./node_modules
 COPY --from=base --chown=nodejs:nodejs $APP_PATH/package.json ./package.json
 # Install wget to healthcheck the server
 RUN  apt-get update \
-    && apt-get install -y wget \
-    && rm -rf /var/lib/apt/lists/*
+  && apt-get install -y wget \
+  && rm -rf /var/lib/apt/lists/*
+
 
 ENV FILE_STORAGE_LOCAL_ROOT_DIR=/var/lib/outline/data
 RUN mkdir -p "$FILE_STORAGE_LOCAL_ROOT_DIR" && \
-    chown -R nodejs:nodejs "$FILE_STORAGE_LOCAL_ROOT_DIR" && \
-    chmod 1777 "$FILE_STORAGE_LOCAL_ROOT_DIR"
+  chown -R nodejs:nodejs "$FILE_STORAGE_LOCAL_ROOT_DIR" && \
+  chmod 1777 "$FILE_STORAGE_LOCAL_ROOT_DIR"
 
 VOLUME /var/lib/outline/data
 
