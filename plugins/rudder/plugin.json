@@ -1,0 +1,6 @@
+{
+  "id": "rudder",
+  "name": "Rudder",
+  "priority": 10,
+  "description": "Adds support for rudder tokens."
+}
