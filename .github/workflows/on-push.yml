@@ -31,7 +31,7 @@ jobs:
         with:
           containerfiles: ./Containerfile
           build-args: |
-            image: outline
+            image: ghcr.io/cisco-ex/outline
             tags: ${{ steps.meta.outputs.tags }}
             extra-args: |
             --annotation com.cisco.devices.rudder.branch=${{ github.ref_name }}
