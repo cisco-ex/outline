@@ -15,6 +15,12 @@ jobs:
       - name: login
         uses: redhat-actions/podman-login@v1
         with:
+          registry: artifactory.devhub-cloud.cisco.com
+          username: rudder.gen@cisco.com
+          password: ${{ secrets.devhub }}
+      - name: login
+        uses: redhat-actions/podman-login@v1
+        with:
           registry: ghcr.io/cisco-ex
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
