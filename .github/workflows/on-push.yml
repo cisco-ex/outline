@@ -30,13 +30,12 @@ jobs:
         uses: redhat-actions/buildah-build@v2
         with:
           containerfiles: ./Containerfile
-          build-args: |
-            image: ghcr.io/cisco-ex/outline
-            tags: ${{ steps.meta.outputs.tags }}
-            extra-args: |
+          image: ghcr.io/cisco-ex/outline
+          tags: ${{ steps.meta.outputs.tags }}
+          extra-args: |
             --annotation com.cisco.devices.rudder.branch=${{ github.ref_name }}
             --annotation com.cisco.devices.rudder.env=prod
-            oci: true
+          oci: true
       - name: push
         uses: redhat-actions/push-to-registry@v2
         with:
