@@ -1,0 +1,45 @@
+name: on push
+
+on: push
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v6
+      - name: login
+        uses: redhat-actions/podman-login@v1
+        with:
+          registry: ghcr.io/cisco-ex
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: metadata
+        id: meta
+        uses: docker/metadata-action@v6
+        with:
+          tags: |
+            type=raw,value={{ date 'YYYYMMDDHHmmss' }},prefix=${{ github.ref_name }}-
+            type=sha
+            type=ref,event=branch
+      - name: build container image
+        uses: redhat-actions/buildah-build@v2
+        with:
+          containerfiles: ./Containerfile
+          build-args: |
+            image: outline
+            tags: ${{ steps.meta.outputs.tags }}
+            extra-args: |
+            --annotation com.cisco.devices.rudder.branch=${{ github.ref_name }}
+            --annotation com.cisco.devices.rudder.env=prod
+            oci: true
+      - name: push
+        uses: redhat-actions/push-to-registry@v2
+        with:
+          registry: ghcr.io/cisco-ex
+          image: outline
+          tags: ${{ steps.meta.outputs.tags }}
