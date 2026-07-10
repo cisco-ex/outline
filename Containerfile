@@ -30,7 +30,7 @@ FROM artifactory.devhub-cloud.cisco.com/sto-cg-docker/chainguard-base
 
 WORKDIR /app
 
-RUN apk update && apk add nodejs
+RUN apk update && apk add tini nodejs
 
 COPY --from=build /app/build /app/build
 COPY --from=build /app/node_modules /app/node_modules
@@ -40,4 +40,5 @@ COPY /.sequelizerc /app/.sequelizerc
 COPY /package.json /app/package.json
 
 EXPOSE 3000
-ENTRYPOINT [ "node", "/app/build/server/index.js" ]
+ENTRYPOINT ["tini", "--" ]
+CMD [ "node", "server.js" ]
