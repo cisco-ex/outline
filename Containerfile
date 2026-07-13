@@ -41,4 +41,4 @@ COPY /package.json /app/package.json
 
 EXPOSE 3000
 ENTRYPOINT ["tini", "--" ]
-CMD [ "node", "server.js" ]
+CMD [ "node", "build/server/index.js" ]
