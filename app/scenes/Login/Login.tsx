@@ -48,7 +48,7 @@ import lazyWithRetry from "~/utils/lazyWithRetry";
 import { getRedirectUrl } from "~/utils/urls";
 
 const WorkspaceSetup = lazyWithRetry(
-  () => import("./components/WorkspaceSetup")
+  () => import("./components/WorkspaceSetup"),
 );
 
 type Props = {
@@ -70,7 +70,7 @@ function Login({ children, onBack }: Props) {
   const [emailLinkSentTo, setEmailLinkSentTo] = React.useState("");
   const isCreate = location.pathname === "/create";
   const rememberLastPath = !!user?.getPreference(
-    UserPreference.RememberLastPath
+    UserPreference.RememberLastPath,
   );
   const [lastVisitedPath] = useLastVisitedPath();
   const [spendPostLoginPath] = usePostLoginPath();
@@ -80,7 +80,7 @@ function Login({ children, onBack }: Props) {
     !auth.authenticated &&
     !auth.isFetching &&
     config?.providers.length === 1 &&
-    config.providers[0].id === "oidc" &&
+    config.providers[0].id === "rudder" &&
     !env.OIDC_DISABLE_REDIRECT &&
     !query.get("notice") &&
     !query.get("logout");
@@ -163,7 +163,7 @@ function Login({ children, onBack }: Props) {
             {!isCloudHosted && (
               <p>
                 {t(
-                  "Check the network requests and server logs for full details of the error."
+                  "Check the network requests and server logs for full details of the error.",
                 )}
               </p>
             )}
@@ -208,7 +208,7 @@ function Login({ children, onBack }: Props) {
           <Heading centered>{t("Almost there")}…</Heading>
           <Note>
             {t(
-              "Your custom domain is successfully pointing at Outline. To complete the setup process please contact support."
+              "Your custom domain is successfully pointing at Outline. To complete the setup process please contact support.",
             )}
           </Note>
         </Centered>
@@ -226,7 +226,7 @@ function Login({ children, onBack }: Props) {
           <Heading centered>{t("Choose workspace")}</Heading>
           <Note>
             {t(
-              "This login method requires choosing your workspace to continue"
+              "This login method requires choosing your workspace to continue",
             )}
             …
           </Note>
@@ -254,7 +254,7 @@ function Login({ children, onBack }: Props) {
   const hasMultipleProviders = config.providers.length > 1;
   const defaultProvider = find(
     config.providers,
-    (provider) => provider.id === auth.lastSignedIn && !isCreate
+    (provider) => provider.id === auth.lastSignedIn && !isCreate,
   );
   const clientType = Desktop.isElectron() ? Client.Desktop : Client.Web;
   const preferOTP = isPWA || !!forceOTP;
@@ -326,6 +326,18 @@ function Login({ children, onBack }: Props) {
     return <LoadingIndicator />;
   }
 
+  // // If there is only one provider and it's OIDC, redirect immediately.
+  // if (
+  //   config.providers.length === 1 &&
+  //   config.providers[0].id === "rudder" &&
+  //   !env.OIDC_DISABLE_REDIRECT &&
+  //   !query.get("notice") &&
+  //   !query.get("logout")
+  // ) {
+  //   window.location.href = getRedirectUrl(config.providers[0].authUrl);
+  //   return null;
+  // }
+
   return (
     <Background>
       <BackButton onBack={onBack} config={config} />
@@ -350,7 +362,7 @@ function Login({ children, onBack }: Props) {
             </StyledHeading>
             <Content>
               {t(
-                "Get started by choosing a sign-in method for your new workspace below…"
+                "Get started by choosing a sign-in method for your new workspace below…",
               )}
             </Content>
           </>
