@@ -15634,6 +15634,7 @@ __metadata:
     oy-vey: "npm:^0.12.1"
     pako: "npm:^2.1.0"
     passport: "npm:^0.7.0"
+    passport-custom: "npm:^1.1.1"
     passport-google-oauth2: "npm:^0.2.0"
     passport-oauth2: "npm:^1.8.0"
     passport-slack-oauth2: "npm:^1.2.0"
@@ -16169,6 +16170,15 @@ __metadata:
   version: 1.3.3
   resolution: "parseurl@npm:1.3.3"
   checksum: 10c0/90dd4760d6f6174adb9f20cf0965ae12e23879b5f5464f38e92fce8073354341e4b3b76fa3d878351efe7d01e617121955284cfd002ab087fba1a0726ec0b4f5
+  languageName: node
+  linkType: hard
+
+"passport-custom@npm:^1.1.1":
+  version: 1.1.1
+  resolution: "passport-custom@npm:1.1.1"
+  dependencies:
+    passport-strategy: "npm:1.x.x"
+  checksum: 10c0/49b6fcd125dcd60272d4f02c27acb3b61b2659f3148bc10b31b7c439314054ce32c83a12f422215bdfa83d0463668a1f38ca6e8d68ccd32c922f73ccaa5ac9b3
   languageName: node
   linkType: hard
 
