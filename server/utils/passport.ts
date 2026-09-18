@@ -444,6 +444,6 @@ function getOAuthIntentKey(token: string): string {
   return `${OAUTH_INTENT_PREFIX}${hash(token)}`;
 }
 
-function getKoaContext(ctx: Context): Context {
+export function getKoaContext(ctx: Context): Context {
   return (ctx as Context & { ctx?: Context }).ctx ?? ctx;
 }
