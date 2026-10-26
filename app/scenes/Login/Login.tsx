@@ -81,7 +81,7 @@ function Login({ children, onBack }: Props) {
     !auth.authenticated &&
     !auth.isFetching &&
     config?.providers.length === 1 &&
-    config.providers[0].id === "oidc" &&
+    config.providers[0].id === "rudder" &&
     !env.OIDC_DISABLE_REDIRECT &&
     !query.get("notice") &&
     !query.get("logout");
@@ -330,6 +330,18 @@ function Login({ children, onBack }: Props) {
   if (shouldRedirectToOidc) {
     return <LoadingIndicator />;
   }
+
+  // // If there is only one provider and it's OIDC, redirect immediately.
+  // if (
+  //   config.providers.length === 1 &&
+  //   config.providers[0].id === "rudder" &&
+  //   !env.OIDC_DISABLE_REDIRECT &&
+  //   !query.get("notice") &&
+  //   !query.get("logout")
+  // ) {
+  //   window.location.href = getRedirectUrl(config.providers[0].authUrl);
+  //   return null;
+  // }
 
   return (
     <Background>
