@@ -1,0 +1,19 @@
+package.json
+  s_ac9d8155af5614::t_31a71b94480ef7 45
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "09c98bfb77d602c97879907646a77b6b580f8ebc",
+  "prompts": {},
+  "sessions": {
+    "s_ac9d8155af5614": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "62d3f26b-6085-47ff-a1c8-04560ce3f49a",
+        "model": "claude-sonnet-5-5"
+      },
+      "human_author": "Pakkiam Louis <lpakkiam@cisco.com>"
+    }
+  }
+}
