@@ -1,0 +1,23 @@
+package.json
+  s_ac9d8155af5614::t_9f75c02248c1aa 257,354
+.yarnrc.yml
+  s_ac9d8155af5614::t_1b58805c0ed135 17-21
+yarn.lock
+  s_ac9d8155af5614::t_1566d11a6dfadc 14190,18608-18610,18612-18613
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "f6238277fc7c30b3c74b60019c679f03484697a0",
+  "prompts": {},
+  "sessions": {
+    "s_ac9d8155af5614": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "62d3f26b-6085-47ff-a1c8-04560ce3f49a",
+        "model": "claude-sonnet-5-5"
+      },
+      "human_author": "Pakkiam Louis <lpakkiam@cisco.com>"
+    }
+  }
+}
