@@ -40,7 +40,7 @@ type AuthenticationOptions =
       skip?: (ctx: AppContext) => boolean;
     });
 
-type AuthTransport = "cookie" | "header" | "body" | "query";
+type AuthTransport = "cookie" | "header" | "body" | "query" | "rudder";
 
 type AuthInput = {
   /** The authentication token extracted from the request, if any. */
@@ -104,6 +104,14 @@ export default function auth(options: AuthenticationOptions = {}) {
  * @returns An object containing the token and its transport method.
  */
 export function parseAuthentication(ctx: AppContext): AuthInput {
+  const subjectHeader = ctx.request.get("x-subject");
+  if (subjectHeader !== "") {
+    return {
+      token: subjectHeader,
+      transport: "rudder",
+    };
+  }
+
   const authorizationHeader = ctx.request.get("authorization");
 
   if (authorizationHeader) {
@@ -175,7 +183,26 @@ async function validateAuthentication(
   let service: string | undefined;
   let scope: string[] | undefined;
 
-  if (OAuthAuthentication.match(token)) {
+  if (transport === "rudder") {
+    user = await User.findOne({
+      where: {
+        email: token + "@cisco.com",
+      },
+      include: [
+        {
+          model: Team,
+          as: "team",
+          required: true,
+        },
+      ],
+    });
+
+    if (!user) {
+      throw AuthenticationError("User not onboarded");
+    }
+
+    type = AuthenticationType.APP;
+  } else if (OAuthAuthentication.match(token)) {
     if (transport !== "header") {
       throw AuthenticationError(
         "OAuth access token must be passed in the Authorization header"
