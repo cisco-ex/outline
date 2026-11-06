@@ -1,0 +1,6 @@
+{
+  "id": "cisco.com",
+  "name": "rudder",
+  "priority": 10,
+  "description": "Adds support for rudder tokens."
+}

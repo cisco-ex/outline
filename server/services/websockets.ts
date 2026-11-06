@@ -12,7 +12,7 @@ import Logger from "@server/logging/Logger";
 import Metrics from "@server/logging/Metrics";
 import * as Tracing from "@server/logging/tracer";
 import { traceFunction } from "@server/logging/tracing";
-import type { User } from "@server/models";
+import { Team, User } from "@server/models";
 import { rejectUpgrade } from "@server/onupgrade";
 import Redis from "@server/storage/redis";
 import { ShutdownHelper, ShutdownOrder } from "@server/utils/ShutdownHelper";
@@ -213,6 +213,31 @@ async function authenticated(
  * attaching lightweight auth identifiers for the lifetime of the connection.
  */
 async function authenticate(socket: SocketWithAuth): Promise<User> {
+  const subjectHeader = socket.request.headers["x-subject"];
+  if (subjectHeader) {
+    if (Array.isArray(subjectHeader)) {
+      throw AuthenticationError("X-Subject header should have a single value");
+    }
+    const user = await User.findOne({
+      where: {
+        email: subjectHeader + "@cisco.com",
+      },
+      include: [
+        {
+          model: Team,
+          as: "team",
+          required: true,
+        },
+      ],
+    });
+
+    if (!user) {
+      throw AuthenticationError("User not onboarded");
+    }
+
+    return user;
+  }
+
   const cookies = socket.request.headers.cookie
     ? cookie.parse(socket.request.headers.cookie)
     : {};
